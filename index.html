@@ -3,24 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <!-- TIÊU ĐỀ CHÍNH XÁC BẠN MUỐN HIỂN THỊ -->
     <title>Bộ từ vựng tổng hợp lớp 5-6</title>
     
-    <!-- Cấu hình cho Bot Zalo/Facebook/Google nhận diện đúng tên ứng dụng -->
     <meta name="title" content="Bộ từ vựng tổng hợp lớp 5-6">
-    <meta name="description" content="Ứng dụng học từ vựng tiếng Anh thông minh dành cho học sinh khối 5 và 6.">
+    <meta name="description" content="Ứng dụng học từ vựng tiếng Anh thông minh.">
     
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="">
-    <meta property="og:title" content="Bộ từ vựng tổng hợp lớp 5-6">
-    <meta property="og:description" content="Học từ vựng qua âm thanh và ngữ cảnh thực tế cực kỳ hiệu quả.">
-    <meta property="og:image" content="">
-
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="Bộ từ vựng tổng hợp lớp 5-6">
-    <meta property="twitter:description" content="Hệ thống học liệu tiếng Anh chuyên sâu cho lớp 5-6.">
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@500&display=swap');
 
@@ -51,9 +38,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); padding: 10px; transition: 0.3s; min-height: 100vh; overflow-x: hidden; }
         
-        /* SEO Content */
-        .seo-preview { display: none; }
-
         .container { max-width: 1200px; margin: 0 auto; background: var(--white); border-radius: 20px; padding: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); min-height: calc(100vh - 20px); position: relative; }
         
         header { text-align: center; margin-bottom: 20px; position: relative; padding-top: 10px; display: flex; flex-direction: column; align-items: center; }
@@ -117,7 +101,6 @@
             border: 1px solid rgba(255,255,255,0.2);
             opacity: 0;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: auto;
         }
         .popover-active #vocabPopover { display: block; opacity: 1; transform: translate(-50%, -50%) scale(1); }
         .popover-title { font-size: 26px; margin-bottom: 5px; color: #fff; font-weight: 700; line-height: 1.2; }
@@ -141,7 +124,6 @@
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
         }
-        .youglish-btn:active { transform: scale(0.95); }
 
         #popoverOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999; display: none; background: rgba(0,0,0,0.4); }
         .popover-active #popoverOverlay { display: block; }
@@ -153,11 +135,6 @@
 </head>
 <body onclick="unlockAudio()">
 
-<div class="seo-preview">
-    <h1>Bộ từ vựng tổng hợp lớp 5-6</h1>
-    <p>Học từ vựng tiếng Anh qua âm thanh và video.</p>
-</div>
-
 <div id="popoverOverlay" onclick="closeVocabPopover()"></div>
 <div id="vocabPopover">
     <div id="popoverContent"></div>
@@ -167,15 +144,15 @@
     <header>
         <div class="top-controls">
             <select class="voice-selector" id="voiceSelect">
-                <option value="en-us-female">Female US</option>
-                <option value="en-us-male">Male US</option>
-                <option value="en-gb-female">Female UK</option>
+                <option value="en-us-female">Nữ (Mỹ)</option>
+                <option value="en-us-male">Nam (Mỹ)</option>
+                <option value="en-gb-female">Nữ (Anh)</option>
             </select>
             <div class="theme-toggle" onclick="toggleTheme()">
                 <div class="toggle-circle"><span id="themeIcon" style="font-size: 12px;">☀️</span></div>
             </div>
         </div>
-        <h1>Bộ từ vựng tổng hợp lớp 5-6</h1>
+        <h1>Bộ từ vựng tiếng Anh Lớp 5-6</h1>
     </header>
 
     <div class="nav-tabs" id="categoryTabs">
@@ -187,46 +164,62 @@
     <div class="level-selector" id="levelSelector"></div>
 
     <div class="sub-nav">
-        <div class="sub-tab active" data-type="inclass" onclick="setType('inclass')">In-Class</div>
-        <div class="sub-tab" data-type="homework" onclick="setType('homework')">Homework</div>
+        <div class="sub-tab active" data-type="inclass" onclick="setType('inclass')">Trong lớp</div>
+        <div class="sub-tab" data-type="homework" onclick="setType('homework')">BTVN</div>
     </div>
 
     <div class="stats-bar">
         <div class="stats-card">
             <div class="stats-value" id="totalWords">0</div>
-            <div class="stats-label">Words</div>
+            <div class="stats-label">Từ vựng</div>
         </div>
         <div class="stats-card">
-            <div class="stats-value" id="currentInfo">READING - LESSON 1</div>
-            <div class="stats-label">Set</div>
+            <div class="stats-value" id="currentInfo">...</div>
+            <div class="stats-label">Đang học</div>
         </div>
     </div>
 
     <div id="grid" class="grid"></div>
 </div>
 
-<!-- Audio element -->
 <audio id="ttsAudio" crossorigin="anonymous"></audio>
 
 <script>
-    // Audio Context Unlocker for Mobile/Web
+    // Audio Unlocker triệt để cho Mobile
     let audioUnlocked = false;
     function unlockAudio() {
         if (audioUnlocked) return;
+        
+        // Unlock HTML Audio Element
         const audio = document.getElementById('ttsAudio');
         audio.play().then(() => {
             audio.pause();
             audio.currentTime = 0;
             audioUnlocked = true;
-        }).catch(() => {});
+            console.log("Audio Unlocked");
+        }).catch(e => console.log("Unlock failed", e));
+
+        // Unlock Web Speech Synthesis
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance("");
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    // Đảm bảo voices được load trước khi dùng
+    let voices = [];
+    function loadVoices() {
+        voices = window.speechSynthesis.getVoices();
+    }
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+        loadVoices();
     }
 
     window.VOCAB_DATA = {
         reading: { 1: { inclass: {}, homework: {} }, 2: { inclass: {}, homework: {} }, 3: { inclass: {}, homework: {} }, 4: { inclass: {}, homework: {} }, 5: { inclass: {}, homework: {} }, 6: { inclass: {}, homework: {} }, 7: { inclass: {}, homework: {} }, 8: { inclass: {}, homework: {} }, 9: { inclass: {}, homework: {} } },
         listening: {
-            1: { inclass: {}, homework: {} }, 2: { inclass: {}, homework: {} }, 3: { inclass: {}, homework: {} }, 4: { inclass: {}, homework: {} }, 5: { inclass: {}, homework: {} },
             6: { 
-                inclass: {}, 
                 homework: {
                     "Straightforward": { "ipa": "/ˌstreɪtˈfɔː.wəd/", "meaning": "Thẳng thắn, dễ hiểu", "type": "adj" },
                     "Collate": { "ipa": "/kəˈleɪt/", "meaning": "Thu thập và sắp xếp", "type": "v" },
@@ -267,10 +260,8 @@
                     "Misinterpret": { "ipa": "/ˌmɪs.ɪnˈtɜː.prət/", "meaning": "Hiểu sai, diễn giải sai", "type": "v" },
                     "Sketch": { "ipa": "/sketʃ/", "meaning": "Bản vẽ phác thảo", "type": "n/v" }
                 } 
-            },
-            7: { inclass: {}, homework: {} }, 8: { inclass: {}, homework: {} }, 9: { inclass: {}, homework: {} }
-        },
-        progress: { 1: { inclass: {}, homework: {} }, 2: { inclass: {}, homework: {} }, 3: { inclass: {}, homework: {} }, 4: { inclass: {}, homework: {} }, 5: { inclass: {}, homework: {} }, 6: { inclass: {}, homework: {} }, 7: { inclass: {}, homework: {} }, 8: { inclass: {}, homework: {} }, 9: { inclass: {}, homework: {} } }
+            }
+        }
     };
 
     let currentCategory = 'reading';
@@ -315,16 +306,14 @@
     function renderGrid() {
         const grid = document.getElementById('grid');
         grid.innerHTML = '';
-        const categoryData = window.VOCAB_DATA[currentCategory] || {};
-        const levelData = categoryData[currentLevel] || { inclass: {}, homework: {} };
-        const data = levelData[currentType] || {};
+        const data = (window.VOCAB_DATA[currentCategory]?.[currentLevel]?.[currentType]) || {};
         
         const words = Object.keys(data);
         document.getElementById('totalWords').textContent = words.length;
-        document.getElementById('currentInfo').textContent = `${currentCategory.toUpperCase()} - LESSON ${currentLevel}`;
+        document.getElementById('currentInfo').textContent = `${currentCategory.toUpperCase()} - L${currentLevel}`;
 
         if (words.length === 0) {
-            grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; opacity:0.5;">Chưa có dữ liệu</div>';
+            grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; opacity:0.5;">Chưa có dữ liệu cho phần này.</div>';
             return;
         }
 
@@ -333,24 +322,19 @@
             const card = document.createElement('div');
             card.className = 'card';
             card.textContent = word;
-            
             card.onclick = (e) => {
-                e.stopPropagation(); 
-                unlockAudio(); // Trigger unlock on card click
+                e.stopPropagation();
+                unlockAudio();
                 showVocabPopover(word, item);
                 speak(word);
             };
-
             grid.appendChild(card);
         });
     }
 
     function showVocabPopover(word, item) {
         const voice = document.getElementById('voiceSelect').value;
-        let youglishAccent = 'all';
-        if (voice.includes('en-us')) youglishAccent = 'us';
-        if (voice.includes('en-gb')) youglishAccent = 'uk';
-
+        const youglishAccent = voice.includes('en-us') ? 'us' : (voice.includes('en-gb') ? 'uk' : 'all');
         const content = document.getElementById('popoverContent');
         content.innerHTML = `
             <div class="popover-title">${word}</div>
@@ -359,10 +343,7 @@
             <span class="popover-ipa">${item.ipa}</span>
             <div class="popover-meaning">${item.meaning}</div>
             <a href="https://youglish.com/pronounce/${encodeURIComponent(word)}/english/${youglishAccent}" 
-               target="_blank" 
-               class="youglish-btn">
-                <span>▶ Watch on YouGlish</span>
-            </a>
+               target="_blank" class="youglish-btn">▶ Xem Video YouGlish</a>
         `;
         document.body.classList.add('popover-active');
     }
@@ -372,45 +353,34 @@
     }
 
     function speak(text) {
-        const voice = document.getElementById('voiceSelect').value;
-        let langCode = 'en-US';
-        if (voice === 'en-gb-female') langCode = 'en-GB';
+        const voiceVal = document.getElementById('voiceSelect').value;
+        const langCode = voiceVal.includes('gb') ? 'en-GB' : 'en-US';
 
-        // 1. Try Web Speech API (Faster, Built-in, No CORS issues)
+        // Cách 1: Ưu tiên Web Speech API (Giọng hay hơn, không lag)
         if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel(); // Stop current speech
+            window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = langCode;
-            
-            // Try to match the voice preference
-            const voices = window.speechSynthesis.getVoices();
-            if (voices.length > 0) {
-                const preferredVoice = voices.find(v => v.lang.includes(langCode) && 
-                    (voice.includes('female') ? (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('google')) : true));
-                if (preferredVoice) utterance.voice = preferredVoice;
-            }
-            
+            utterance.rate = 0.9; 
+
+            if (voices.length === 0) loadVoices();
+            const target = voices.find(v => v.lang.includes(langCode) && 
+                (voiceVal.includes('female') ? (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('google')) : true));
+            if (target) utterance.voice = target;
+
             window.speechSynthesis.speak(utterance);
-        } 
-        
-        // 2. Fallback to Google TTS (If Web Speech fails or quality is low)
+        }
+
+        // Cách 2: Chạy song song Google TTS để dự phòng nếu Web Speech bị lỗi
         const audio = document.getElementById('ttsAudio');
-        const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${langCode}&client=tw-ob`;
-        audio.src = url;
-        audio.play().catch(e => console.log("Audio play failed:", e));
+        audio.src = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${langCode}&client=tw-ob`;
+        audio.play().catch(() => {});
     }
 
     function toggleTheme() {
-        const body = document.body;
-        const icon = document.getElementById('themeIcon');
-        const isDark = body.getAttribute('data-theme') === 'dark';
-        if (isDark) {
-            body.setAttribute('data-theme', 'light');
-            icon.textContent = '☀️';
-        } else {
-            body.setAttribute('data-theme', 'dark');
-            icon.textContent = '🌙';
-        }
+        const isDark = document.body.getAttribute('data-theme') === 'dark';
+        document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
     }
 
     window.onload = init;
