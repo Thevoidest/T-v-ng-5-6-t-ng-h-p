@@ -51,7 +51,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); padding: 10px; transition: 0.3s; min-height: 100vh; overflow-x: hidden; }
         
-        /* Đảm bảo nội dung SEO nằm ngay đầu body để Bot nhận diện trước các thành phần khác */
+        /* SEO Content */
         .seo-preview { display: none; }
 
         .container { max-width: 1200px; margin: 0 auto; background: var(--white); border-radius: 20px; padding: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); min-height: calc(100vh - 20px); position: relative; }
@@ -151,12 +151,11 @@
         }
     </style>
 </head>
-<body>
+<body onclick="unlockAudio()">
 
-<!-- CHẶN CÁC ĐOẠN TEXT RÁC KHI CHIA SẺ -->
 <div class="seo-preview">
     <h1>Bộ từ vựng tổng hợp lớp 5-6</h1>
-    <p>Hệ thống hỗ trợ học tập tiếng Anh thông minh với âm thanh chuẩn.</p>
+    <p>Học từ vựng tiếng Anh qua âm thanh và video.</p>
 </div>
 
 <div id="popoverOverlay" onclick="closeVocabPopover()"></div>
@@ -206,27 +205,26 @@
     <div id="grid" class="grid"></div>
 </div>
 
-<audio id="ttsAudio" hidden></audio>
+<!-- Audio element -->
+<audio id="ttsAudio" crossorigin="anonymous"></audio>
 
 <script>
+    // Audio Context Unlocker for Mobile/Web
+    let audioUnlocked = false;
+    function unlockAudio() {
+        if (audioUnlocked) return;
+        const audio = document.getElementById('ttsAudio');
+        audio.play().then(() => {
+            audio.pause();
+            audio.currentTime = 0;
+            audioUnlocked = true;
+        }).catch(() => {});
+    }
+
     window.VOCAB_DATA = {
-        reading: {
-            1: { inclass: {}, homework: {} },
-            2: { inclass: {}, homework: {} },
-            3: { inclass: {}, homework: {} },
-            4: { inclass: {}, homework: {} },
-            5: { inclass: {}, homework: {} },
-            6: { inclass: {}, homework: {} },
-            7: { inclass: {}, homework: {} },
-            8: { inclass: {}, homework: {} },
-            9: { inclass: {}, homework: {} }
-        },
+        reading: { 1: { inclass: {}, homework: {} }, 2: { inclass: {}, homework: {} }, 3: { inclass: {}, homework: {} }, 4: { inclass: {}, homework: {} }, 5: { inclass: {}, homework: {} }, 6: { inclass: {}, homework: {} }, 7: { inclass: {}, homework: {} }, 8: { inclass: {}, homework: {} }, 9: { inclass: {}, homework: {} } },
         listening: {
-            1: { inclass: {}, homework: {} },
-            2: { inclass: {}, homework: {} },
-            3: { inclass: {}, homework: {} },
-            4: { inclass: {}, homework: {} },
-            5: { inclass: {}, homework: {} },
+            1: { inclass: {}, homework: {} }, 2: { inclass: {}, homework: {} }, 3: { inclass: {}, homework: {} }, 4: { inclass: {}, homework: {} }, 5: { inclass: {}, homework: {} },
             6: { 
                 inclass: {}, 
                 homework: {
@@ -270,21 +268,9 @@
                     "Sketch": { "ipa": "/sketʃ/", "meaning": "Bản vẽ phác thảo", "type": "n/v" }
                 } 
             },
-            7: { inclass: {}, homework: {} },
-            8: { inclass: {}, homework: {} },
-            9: { inclass: {}, homework: {} }
+            7: { inclass: {}, homework: {} }, 8: { inclass: {}, homework: {} }, 9: { inclass: {}, homework: {} }
         },
-        progress: {
-            1: { inclass: {}, homework: {} },
-            2: { inclass: {}, homework: {} },
-            3: { inclass: {}, homework: {} },
-            4: { inclass: {}, homework: {} },
-            5: { inclass: {}, homework: {} },
-            6: { inclass: {}, homework: {} },
-            7: { inclass: {}, homework: {} },
-            8: { inclass: {}, homework: {} },
-            9: { inclass: {}, homework: {} }
-        }
+        progress: { 1: { inclass: {}, homework: {} }, 2: { inclass: {}, homework: {} }, 3: { inclass: {}, homework: {} }, 4: { inclass: {}, homework: {} }, 5: { inclass: {}, homework: {} }, 6: { inclass: {}, homework: {} }, 7: { inclass: {}, homework: {} }, 8: { inclass: {}, homework: {} }, 9: { inclass: {}, homework: {} } }
     };
 
     let currentCategory = 'reading';
@@ -303,7 +289,7 @@
             const btn = document.createElement('div');
             btn.className = `level-btn ${i === currentLevel ? 'active' : ''}`;
             btn.textContent = `LESSON ${i}`;
-            btn.onclick = () => setLevel(i);
+            btn.onclick = (e) => { e.stopPropagation(); setLevel(i); };
             selector.appendChild(btn);
         }
     }
@@ -350,6 +336,7 @@
             
             card.onclick = (e) => {
                 e.stopPropagation(); 
+                unlockAudio(); // Trigger unlock on card click
                 showVocabPopover(word, item);
                 speak(word);
             };
@@ -386,13 +373,31 @@
 
     function speak(text) {
         const voice = document.getElementById('voiceSelect').value;
-        let langCode = 'en-us';
-        if (voice === 'en-gb-female') langCode = 'en-gb';
+        let langCode = 'en-US';
+        if (voice === 'en-gb-female') langCode = 'en-GB';
+
+        // 1. Try Web Speech API (Faster, Built-in, No CORS issues)
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel(); // Stop current speech
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = langCode;
+            
+            // Try to match the voice preference
+            const voices = window.speechSynthesis.getVoices();
+            if (voices.length > 0) {
+                const preferredVoice = voices.find(v => v.lang.includes(langCode) && 
+                    (voice.includes('female') ? (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('google')) : true));
+                if (preferredVoice) utterance.voice = preferredVoice;
+            }
+            
+            window.speechSynthesis.speak(utterance);
+        } 
         
-        const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${langCode}&client=tw-ob`;
+        // 2. Fallback to Google TTS (If Web Speech fails or quality is low)
         const audio = document.getElementById('ttsAudio');
+        const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${langCode}&client=tw-ob`;
         audio.src = url;
-        audio.play().catch(() => {});
+        audio.play().catch(e => console.log("Audio play failed:", e));
     }
 
     function toggleTheme() {
